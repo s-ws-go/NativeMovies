@@ -30,7 +30,6 @@ export default function App() {
       "https://images.unsplash.com/photo-1615450112423-f724345c306f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
       require("./assets/splash.png"),
     ]);
-    console.log(images);
     const fonts = cacheFonts([Ionicons.font]);
     //image array 와 font array를 promise 형태로 받고, 이걸 퓨전함
     return Promise.all([...images, ...fonts]);
