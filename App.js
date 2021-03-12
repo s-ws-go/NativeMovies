@@ -5,6 +5,8 @@ import AppLoading from "expo-app-loading";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import Stack from "./navigation/Stack";
 
 //cacheImages 는 image들의 array로 구성 예정
 //else문의 asset은 expo의 내장 라이브러리로, 외부 asset으로의 접근을 허용해 줌
@@ -39,9 +41,9 @@ export default function App() {
     setIsReady(true);
   };
   return isReady ? (
-    <View>
-      <Text>Ready!</Text>
-    </View>
+    <NavigationContainer>
+      <Stack />
+    </NavigationContainer>
   ) : (
     <AppLoading
       startAsync={loadAssets}
