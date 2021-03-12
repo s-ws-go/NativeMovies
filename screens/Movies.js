@@ -2,13 +2,13 @@ import React from "react";
 import { View, Text, Button } from "react-native";
 
 export default ({ navigation }) => (
-  <View>
+  <View style={{ flex: 1, backgroundColor: "black" }}>
     <Text>movies</Text>
     <Button
       title="Movie"
       onPress={() => {
         navigation.navigate("Detail");
       }}
-    ></Button>
+    />
   </View>
 );
