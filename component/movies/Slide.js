@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components/native";
 import propTypes from "prop-types";
 import { apiImage } from "../../Api";
-import Poster from "../poster";
+import Poster from "../Poster";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Votes from "../Votes";
 
 const Container = styled.View`
   width: 100%;
@@ -33,12 +34,8 @@ const Title = styled.Text`
   font-size: 22px;
   margin-bottom: 10px;
 `;
-const Votes = styled.Text`
-  color: white;
-  opacity: 0.7;
+const VotesContainer = styled.View`
   margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 600;
 `;
 const Overview = styled.Text`
   color: white;
@@ -65,7 +62,9 @@ const Slide = ({ id, title, backgroundImage, votes, overview, poster }) => (
       <Poster url={apiImage(poster)} />
       <Data>
         <Title>{title.length > 30 ? `${title.slice(0, 30)}..` : title}</Title>
-        <Votes>★ {votes} / 10</Votes>
+        <VotesContainer>
+          <Votes votes={votes} />
+        </VotesContainer>
         <Overview>{overview.slice(0, 100)}..</Overview>
         {/* TouchableOpacity__누를 수 있는 컴포넌트네.. 네이티브 자체 제공 */}
         <TouchableOpacity>
