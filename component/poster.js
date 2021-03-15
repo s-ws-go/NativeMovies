@@ -2,9 +2,14 @@
 import React from "react";
 import propTypes from "prop-types";
 import styled from "styled-components";
-import { Image } from "react-native";
 
-const Poster = ({ url }) => <Image />;
+const Image = styled.Image`
+  width: 100px;
+  height: 160px;
+  border-radius: 6px;
+`;
+
+const Poster = ({ url }) => <Image source={{ uri: url }} />;
 
 Poster.propTypes = {
   url: propTypes.string.isRequired,
