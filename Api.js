@@ -1,31 +1,41 @@
-import Axios from "axios";
+import axios from "axios";
 
 const TMDB_KEY = "f9fd7b5b380b16d49bec3a9239f19ac0";
 
-const makeRequest = (path, params) => {
-  Axios.get(`https://api.themoviedb.org/3${path}`, {
+const makeRequest = (path, params) =>
+  axios.get(`https://api.themoviedb.org/3${path}`, {
     params: {
       ...params,
       api_key: TMDB_KEY,
     },
   });
+
+const getAnything = async (path, params) => {
+  try {
+    const {
+      data: { results },
+      data,
+    } = await makeRequest(path, params);
+    return [results || data, null];
+  } catch (e) {
+    return [null, e];
+  }
 };
 
-export const movieApi = () => {
-    nowPlaying: () => makeRequest("/movie/now_playing"),
-    popular : () => makeRequest("/movie/popular"),
-    upcoming : () => makeRequest("/movie/upcoming", {region : "kr"}),
-    search : query => makeRequest("/search/movie", query),
-    movie : (id) => makeRequest(`/movie/${id}`),
-    discover : () => makeRequest("/discover/movie"),
-}
+export const movieApi = {
+  nowPlaying: () => getAnything("/movie/now_playing"),
+  popular: () => getAnything("/movie/popular"),
+  upcoming: () => getAnything("/movie/upcoming", { region: "kr" }),
+  search: (query) => getAnything("/search/movie", { query }),
+  movie: (id) => getAnything(`/movie/${id}`),
+  discover: () => getAnything("/discover/movie"),
+};
 
-export const tvApi = () => {
-  today: () => makeRequest("/tv/airing_today"),
-  thisWeek: () => makeRequest("/tv/on_the_air"),
-  topRated: () => makeRequest("/tv/top_rated"),
-  popular: () => makeRequest("/tv/popular"),
-  search: query => makeRequest("/search/tv", { query }),
-  show: id => makeRequest(`/tv/${id}`)
-
+export const tvApi = {
+  today: () => getAnything("/tv/airing_today"),
+  thisWeek: () => getAnything("/tv/on_the_air"),
+  topRated: () => getAnything("/tv/top_rated"),
+  popular: () => getAnything("/tv/popular"),
+  search: (query) => getAnything("/search/tv", { query }),
+  show: (id) => getAnything(`/tv/${id}`),
 };
