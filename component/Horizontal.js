@@ -29,24 +29,34 @@ const Release = styled.Text`
   color: white;
 `;
 
+const Firstair = styled.Text`
+  color: white;
+`;
+
 const Overview = styled.Text`
   color: white;
   margin-top: 5px;
 `;
 
-const Horizontal = ({ id, poster, title, overview, releasedate }) => (
-  <TouchableOpacity>
-    <Container>
-      <Poster url={poster}></Poster>
-      <Data>
-        <Title>{Trimtext(title, 30)}</Title>
-        {/* TV창에 컴포넌트 그대로 활용하기 위해 releasedate 부분은 조건으로 설정(TV에는 개봉일 없으니까) */}
-        {releasedate ? <Release>{formatdate(releasedate)} 개봉</Release> : null}
-        <Overview>{Trimtext(overview, 100)}</Overview>
-      </Data>
-    </Container>
-  </TouchableOpacity>
-);
+const Horizontal = ({ id, poster, title, overview, releasedate, firstair }) => {
+  return (
+    <TouchableOpacity>
+      <Container>
+        <Poster url={poster}></Poster>
+        <Data>
+          <Title>{Trimtext(title, 30)}</Title>
+          {/* TV창에 컴포넌트 그대로 활용하기 위해 releasedate 부분은 조건으로 설정(TV에는 개봉일 없으니까) */}
+          {releasedate ? (
+            <Release>{formatdate(releasedate)} 개봉</Release>
+          ) : (
+            <Firstair>{formatdate(firstair)} 첫 방송</Firstair>
+          )}
+          <Overview>{Trimtext(overview, 100)}</Overview>
+        </Data>
+      </Container>
+    </TouchableOpacity>
+  );
+};
 
 Horizontal.propTypes = {
   id: propTypes.number.isRequired,

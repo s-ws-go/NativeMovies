@@ -7,6 +7,8 @@ import Title from "../../component/Title";
 import Vertical from "../../component/Vertical";
 import Horizontal from "../../component/Horizontal";
 import ScrollContainer from "../../component/ScrollContainer";
+import HorizontalSliders from "../../component/HorizontalSliders";
+import ListSliders from "../../component/ListSliders";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -18,11 +20,6 @@ const SliderContainer = styled.View`
 `;
 
 const Container = styled.View``;
-
-// 컴포넌트 이름은 항상 대문자시작!!
-const UpcomingContainer = styled.View`
-  margin-top: 20px;
-`;
 
 export default ({ loading, nowPlaying, popular, upcoming }) => {
   return (
@@ -44,14 +41,8 @@ export default ({ loading, nowPlaying, popular, upcoming }) => {
           </Swiper>
         </SliderContainer>
         <Container>
-          <Title title={"Popular Movies"} />
-          {/* 수평선은 검은색이라 어차피 안 보임 */}
-          <ScrollView
-            style={{ marginVertical: 20 }}
-            contentContainerStyle={{ paddingLeft: 30 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
+          {/* 여기 타이틀 써준게 HorizontalSliders의 props로 들어가서 제목으로 표시되는겨. 중요!! */}
+          <HorizontalSliders title={"Popular Movies"}>
             {popular.map((movie) => (
               <Vertical
                 key={movie.id}
@@ -61,9 +52,8 @@ export default ({ loading, nowPlaying, popular, upcoming }) => {
                 votes={movie.vote_average}
               />
             ))}
-          </ScrollView>
-          <Title title={"Coming Soon"}></Title>
-          <UpcomingContainer>
+          </HorizontalSliders>
+          <ListSliders title="Coming Soon">
             {upcoming.map((movie) => (
               <Horizontal
                 key={movie.id}
@@ -74,7 +64,7 @@ export default ({ loading, nowPlaying, popular, upcoming }) => {
                 overview={movie.overview}
               />
             ))}
-          </UpcomingContainer>
+          </ListSliders>
         </Container>
       </>
     </ScrollContainer>

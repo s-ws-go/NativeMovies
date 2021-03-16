@@ -49,8 +49,8 @@ export default ({ navigation, route }) => {
         },
       }}
     >
-      <Tab.Screen name="Tv" component={Tv} />
       <Tab.Screen name="Movies" component={Movies} />
+      <Tab.Screen name="Tv" component={Tv} />
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Fav" component={Fav} />
     </Tab.Navigator>
