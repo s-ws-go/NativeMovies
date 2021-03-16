@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Movies from "../screens/Movies/MoviesContainer";
+//폴더 안의 index.js를 자동으로 불러오는 거야.
+import Movies from "../screens/Movies";
 import Tv from "../screens/Tv";
 import Search from "../screens/Search";
 import Fav from "../screens/Fav";

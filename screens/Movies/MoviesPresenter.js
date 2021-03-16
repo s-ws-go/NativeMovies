@@ -18,6 +18,11 @@ const SliderContainer = styled.View`
 
 const Container = styled.View``;
 
+// 컴포넌트 이름은 항상 대문자시작!!
+const UpcomingContainer = styled.View`
+  margin-top: 20px;
+`;
+
 export default ({ loading, nowPlaying, popular, upcoming }) => {
   return (
     <ScrollView
@@ -25,10 +30,11 @@ export default ({ loading, nowPlaying, popular, upcoming }) => {
         backgroundColor: "black",
       }}
       contentContainerStyle={{
-        //flex 기본방향이 column이라 저 삼항연산자 만으로는 로딩로고가 화면 세로 가운데로 안 온다.
-        //flex가 화면 전체를 차지하는 명령을 넣어줘서 로딩때는 핸드폰 화면 한 가운데에 로딩로고가 오게끔 해 준다.
-        //화면이 충분이 찼으므로 맨 아래 Horizontal Screen 구현을 위해 flex:1을 삭제
-
+        // flex 기본방향이 column이라 저 삼항연산자 만으로는 로딩로고가 화면 세로 가운데로 안 온다.
+        // flex가 화면 전체를 차지하는 명령을 넣어줘서 로딩때는 핸드폰 화면 한 가운데에 로딩로고가 오게끔 해 준다.
+        // rr화면이 충분이 찼으므로 맨 아래 Horizontal Screen 구현을 위해 flex:1을 삭제
+        // 로딩상태아이콘이 위에 나타나 버리니까 flex를 로딩중일때랑 로딩됐을때로 다르게 설정
+        flex: loading ? 1 : null,
         justifyContent: loading ? "center" : "flex-start",
       }}
     >
@@ -71,16 +77,18 @@ export default ({ loading, nowPlaying, popular, upcoming }) => {
               ))}
             </ScrollView>
             <Title title={"Coming Soon"}></Title>
-            {upcoming.map((movie) => (
-              <Horizontal
-                key={movie.id}
-                id={movie.id}
-                poster={movie.poster_path}
-                title={movie.original_title}
-                votes={movie.vote_average}
-                overview={movie.overview}
-              />
-            ))}
+            <UpcomingContainer>
+              {upcoming.map((movie) => (
+                <Horizontal
+                  key={movie.id}
+                  id={movie.id}
+                  poster={movie.poster_path}
+                  title={movie.original_title}
+                  releasedate={movie.release_date}
+                  overview={movie.overview}
+                />
+              ))}
+            </UpcomingContainer>
           </Container>
         </>
       )}

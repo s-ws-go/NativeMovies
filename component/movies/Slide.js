@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components/native";
 import propTypes from "prop-types";
 import { apiImage } from "../../Api";
-import Poster from "../Poster";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
+import { Trimtext } from "../../Utils";
 import Votes from "../Votes";
+import Poster from "../Poster";
 
 const Container = styled.View`
   width: 100%;
@@ -59,13 +60,13 @@ const Slide = ({ id, title, backgroundImage, votes, overview, poster }) => (
     {/* 이미지 컴포넌트는 리액트 네이티브 내장 컴포넌트임 */}
     <BG source={{ uri: apiImage(backgroundImage) }} />
     <Content>
-      <Poster url={apiImage(poster)} />
+      <Poster url={poster} />
       <Data>
-        <Title>{title.length > 30 ? `${title.slice(0, 30)}..` : title}</Title>
+        <Title>{Trimtext(title, 30)}</Title>
         <VotesContainer>
           <Votes votes={votes} />
         </VotesContainer>
-        <Overview>{overview.slice(0, 100)}..</Overview>
+        <Overview>{Trimtext(overview, 100)}</Overview>
         {/* TouchableOpacity__누를 수 있는 컴포넌트네.. 네이티브 자체 제공 */}
         <TouchableOpacity>
           <Button>

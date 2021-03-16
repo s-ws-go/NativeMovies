@@ -2,6 +2,7 @@
 import React from "react";
 import propTypes from "prop-types";
 import styled from "styled-components";
+import { apiImage } from "../Api";
 
 const Image = styled.Image`
   width: 100px;
@@ -9,7 +10,7 @@ const Image = styled.Image`
   border-radius: 20px;
 `;
 
-const Poster = ({ url }) => <Image source={{ uri: url }} />;
+const Poster = ({ url }) => <Image source={{ uri: apiImage(url) }} />;
 
 Poster.propTypes = {
   url: propTypes.string.isRequired,
