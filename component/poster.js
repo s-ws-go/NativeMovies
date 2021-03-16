@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Image = styled.Image`
   width: 100px;
   height: 160px;
-  border-radius: 6px;
+  border-radius: 20px;
 `;
 
 const Poster = ({ url }) => <Image source={{ uri: url }} />;
