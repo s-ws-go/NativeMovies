@@ -6,6 +6,7 @@ import Slide from "../../component/movies/Slide";
 import Title from "../../component/Title";
 import Vertical from "../../component/Vertical";
 import Horizontal from "../../component/Horizontal";
+import ScrollContainer from "../../component/ScrollContainer";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
@@ -25,73 +26,57 @@ const UpcomingContainer = styled.View`
 
 export default ({ loading, nowPlaying, popular, upcoming }) => {
   return (
-    <ScrollView
-      style={{
-        backgroundColor: "black",
-      }}
-      contentContainerStyle={{
-        // flex 기본방향이 column이라 저 삼항연산자 만으로는 로딩로고가 화면 세로 가운데로 안 온다.
-        // flex가 화면 전체를 차지하는 명령을 넣어줘서 로딩때는 핸드폰 화면 한 가운데에 로딩로고가 오게끔 해 준다.
-        // rr화면이 충분이 찼으므로 맨 아래 Horizontal Screen 구현을 위해 flex:1을 삭제
-        // 로딩상태아이콘이 위에 나타나 버리니까 flex를 로딩중일때랑 로딩됐을때로 다르게 설정
-        flex: loading ? 1 : null,
-        justifyContent: loading ? "center" : "flex-start",
-      }}
-    >
-      {loading ? (
-        <ActivityIndicator size="large" color="skyblue" />
-      ) : (
-        <>
-          <SliderContainer>
-            <Swiper controlsEnabled={false} loop timeout={3}>
-              {nowPlaying.map((movie) => (
-                <Slide
-                  key={movie.id}
-                  id={movie.id}
-                  title={movie.original_title}
-                  overview={movie.overview}
-                  votes={movie.vote_average}
-                  backgroundImage={movie.backdrop_path}
-                  poster={movie.poster_path}
-                />
-              ))}
-            </Swiper>
-          </SliderContainer>
-          <Container>
-            <Title title={"Popular Movies"} />
-            {/* 수평선은 검은색이라 어차피 안 보임 */}
-            <ScrollView
-              style={{ marginVertical: 20 }}
-              contentContainerStyle={{ paddingLeft: 30 }}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            >
-              {popular.map((movie) => (
-                <Vertical
-                  key={movie.id}
-                  id={movie.id}
-                  poster={movie.poster_path}
-                  title={movie.original_title}
-                  votes={movie.vote_average}
-                />
-              ))}
-            </ScrollView>
-            <Title title={"Coming Soon"}></Title>
-            <UpcomingContainer>
-              {upcoming.map((movie) => (
-                <Horizontal
-                  key={movie.id}
-                  id={movie.id}
-                  poster={movie.poster_path}
-                  title={movie.original_title}
-                  releasedate={movie.release_date}
-                  overview={movie.overview}
-                />
-              ))}
-            </UpcomingContainer>
-          </Container>
-        </>
-      )}
-    </ScrollView>
+    <ScrollContainer loading={loading}>
+      <>
+        <SliderContainer>
+          <Swiper controlsEnabled={false} loop timeout={3}>
+            {nowPlaying.map((movie) => (
+              <Slide
+                key={movie.id}
+                id={movie.id}
+                title={movie.original_title}
+                overview={movie.overview}
+                votes={movie.vote_average}
+                backgroundImage={movie.backdrop_path}
+                poster={movie.poster_path}
+              />
+            ))}
+          </Swiper>
+        </SliderContainer>
+        <Container>
+          <Title title={"Popular Movies"} />
+          {/* 수평선은 검은색이라 어차피 안 보임 */}
+          <ScrollView
+            style={{ marginVertical: 20 }}
+            contentContainerStyle={{ paddingLeft: 30 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {popular.map((movie) => (
+              <Vertical
+                key={movie.id}
+                id={movie.id}
+                poster={movie.poster_path}
+                title={movie.original_title}
+                votes={movie.vote_average}
+              />
+            ))}
+          </ScrollView>
+          <Title title={"Coming Soon"}></Title>
+          <UpcomingContainer>
+            {upcoming.map((movie) => (
+              <Horizontal
+                key={movie.id}
+                id={movie.id}
+                poster={movie.poster_path}
+                title={movie.original_title}
+                releasedate={movie.release_date}
+                overview={movie.overview}
+              />
+            ))}
+          </UpcomingContainer>
+        </Container>
+      </>
+    </ScrollContainer>
   );
 };
