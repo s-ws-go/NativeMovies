@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
-import { ActivityIndicator, Dimensions, ScrollView, View } from "react-native";
+import { Dimensions } from "react-native";
 import Slide from "../../component/movies/Slide";
-import Title from "../../component/Title";
 import Vertical from "../../component/Vertical";
 import Horizontal from "../../component/Horizontal";
 import ScrollContainer from "../../component/ScrollContainer";
@@ -21,52 +20,50 @@ const SliderContainer = styled.View`
 
 const Container = styled.View``;
 
-export default ({ loading, nowPlaying, popular, upcoming }) => {
+export default ({ loading, nowPlaying, popular, upcoming, refreshFn }) => {
   return (
-    <ScrollContainer loading={loading}>
-      <>
-        <SliderContainer>
-          <Swiper controlsEnabled={false} loop timeout={3}>
-            {nowPlaying.map((movie) => (
-              <Slide
-                key={movie.id}
-                id={movie.id}
-                title={movie.original_title}
-                overview={movie.overview}
-                votes={movie.vote_average}
-                backgroundImage={movie.backdrop_path}
-                poster={movie.poster_path}
-              />
-            ))}
-          </Swiper>
-        </SliderContainer>
-        <Container>
-          {/* 여기 타이틀 써준게 HorizontalSliders의 props로 들어가서 제목으로 표시되는겨. 중요!! */}
-          <HorizontalSliders title={"Popular Movies"}>
-            {popular.map((movie) => (
-              <Vertical
-                key={movie.id}
-                id={movie.id}
-                poster={movie.poster_path}
-                title={movie.original_title}
-                votes={movie.vote_average}
-              />
-            ))}
-          </HorizontalSliders>
-          <ListSliders title="Coming Soon">
-            {upcoming.map((movie) => (
-              <Horizontal
-                key={movie.id}
-                id={movie.id}
-                poster={movie.poster_path}
-                title={movie.original_title}
-                releasedate={movie.release_date}
-                overview={movie.overview}
-              />
-            ))}
-          </ListSliders>
-        </Container>
-      </>
+    <ScrollContainer refreshFn={refreshFn} loading={loading}>
+      <SliderContainer>
+        <Swiper controlsEnabled={false} loop timeout={3}>
+          {nowPlaying.map((movie) => (
+            <Slide
+              key={movie.id}
+              id={movie.id}
+              title={movie.original_title}
+              overview={movie.overview}
+              votes={movie.vote_average}
+              backgroundImage={movie.backdrop_path}
+              poster={movie.poster_path}
+            />
+          ))}
+        </Swiper>
+      </SliderContainer>
+      <Container>
+        {/* 여기 타이틀 써준게 HorizontalSliders의 props로 들어가서 제목으로 표시되는겨. 중요!! */}
+        <HorizontalSliders title={"Popular Movies"}>
+          {popular.map((movie) => (
+            <Vertical
+              key={movie.id}
+              id={movie.id}
+              poster={movie.poster_path}
+              title={movie.original_title}
+              votes={movie.vote_average}
+            />
+          ))}
+        </HorizontalSliders>
+        <ListSliders title="Coming Soon">
+          {upcoming.map((movie) => (
+            <Horizontal
+              key={movie.id}
+              id={movie.id}
+              poster={movie.poster_path}
+              title={movie.original_title}
+              releasedate={movie.release_date}
+              overview={movie.overview}
+            />
+          ))}
+        </ListSliders>
+      </Container>
     </ScrollContainer>
   );
 };

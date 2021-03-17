@@ -6,13 +6,11 @@ import propTypes from "prop-types";
 import Input from "../../component/search/Input";
 import HorizontalSliders from "../../component/HorizontalSliders";
 import Vertical from "../../component/Vertical";
-
-const Container = styled.ScrollView`
-  background-color: black;
-`;
+import ScrollContainer from "../../component/ScrollContainer";
 
 const SearchPresenter = ({ movies, shows, onChange, onSubmit, keyword }) => (
-  <Container>
+  //onSubmit 시 keyword가 비어 있을 때 새로고침하면 에러가 남. 이거 고치는 작업 컨테이너에서 함
+  <ScrollContainer loading={false} refreshFn={onSubmit}>
     <Input
       placeholder={"Search For Video.."}
       value={keyword}
@@ -45,7 +43,7 @@ const SearchPresenter = ({ movies, shows, onChange, onSubmit, keyword }) => (
         ))}
       </HorizontalSliders>
     )}
-  </Container>
+  </ScrollContainer>
 );
 
 export default SearchPresenter;

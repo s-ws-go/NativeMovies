@@ -8,9 +8,9 @@ import Horizontal from "../../component/Horizontal";
 
 const Container = styled.View``;
 
-export default ({ loading, today, thisWeek, topRated, popular }) => {
+export default ({ loading, today, thisWeek, topRated, popular, refreshFn }) => {
   return (
-    <ScrollContainer loading={loading}>
+    <ScrollContainer refreshFn={refreshFn} loading={loading}>
       <Container>
         <HorizontalSliders title="인기 채널">
           {popular.map((show) => (
