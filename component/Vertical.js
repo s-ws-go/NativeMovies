@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/native";
 import propTypes from "prop-types";
-import { apiImage } from "../Api";
+import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { Trimtext } from "../Utils";
 import Poster from "./Poster";
@@ -20,8 +20,17 @@ const Title = styled.Text`
 
 //여기 Title 컴포넌트는 공통으로 사용하는 "Title 컴포넌트"랑은 다른거야!
 const Vertical = ({ id, poster, title, votes }) => {
+  const navigation = useNavigation();
+  const gotoDetail = () => {
+    navigation.navigate("Detail", {
+      id,
+      poster,
+      title,
+      votes,
+    });
+  };
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={gotoDetail}>
       <Container>
         <Poster url={poster} />
         <Title>{Trimtext(title, 15)}</Title>

@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components/native";
 import propTypes from "prop-types";
-import { apiImage } from "../../Api";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import { apiImage } from "../../Api";
 import { Trimtext } from "../../Utils";
 import Votes from "../Votes";
 import Poster from "../Poster";
@@ -55,28 +57,41 @@ const ButtonText = styled.Text`
   color: white;
 `;
 
-const Slide = ({ id, title, backgroundImage, votes, overview, poster }) => (
-  <Container>
-    {/* 이미지 컴포넌트는 리액트 네이티브 내장 컴포넌트임 */}
-    <BG source={{ uri: apiImage(backgroundImage) }} />
-    <Content>
-      <Poster url={poster} />
-      <Data>
-        <Title>{Trimtext(title, 30)}</Title>
-        <VotesContainer>
-          <Votes votes={votes} />
-        </VotesContainer>
-        <Overview>{Trimtext(overview, 100)}</Overview>
-        {/* TouchableOpacity__누를 수 있는 컴포넌트네.. 네이티브 자체 제공 */}
-        <TouchableOpacity>
-          <Button>
-            <ButtonText>View Details</ButtonText>
-          </Button>
-        </TouchableOpacity>
-      </Data>
-    </Content>
-  </Container>
-);
+const Slide = ({ id, title, backgroundImage, votes, overview, poster }) => {
+  const navigation = useNavigation();
+  const gotoDetail = () => {
+    navigation.navigate("Detail", {
+      id,
+      title,
+      backgroundImage,
+      votes,
+      overview,
+      poster,
+    });
+  };
+  return (
+    <Container>
+      {/* 이미지 컴포넌트는 리액트 네이티브 내장 컴포넌트임 */}
+      <BG source={{ uri: apiImage(backgroundImage) }} />
+      <Content>
+        <Poster url={poster} />
+        <Data>
+          <Title>{Trimtext(title, 30)}</Title>
+          <VotesContainer>
+            <Votes votes={votes} />
+          </VotesContainer>
+          <Overview>{Trimtext(overview, 100)}</Overview>
+          {/* TouchableOpacity__누를 수 있는 컴포넌트네.. 네이티브 자체 제공 */}
+          <TouchableOpacity onPress={gotoDetail}>
+            <Button>
+              <ButtonText>View Details</ButtonText>
+            </Button>
+          </TouchableOpacity>
+        </Data>
+      </Content>
+    </Container>
+  );
+};
 
 Slide.propTypes = {
   id: propTypes.number.isRequired,

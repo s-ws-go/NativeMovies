@@ -4,7 +4,7 @@ export const Trimtext = (text, limit) =>
 export const formatdate = (date) => {
   const theDate = new Date(date);
   return theDate.toLocaleDateString("ko-KR", {
-    year: "long",
+    year: "numeric",
     month: "numeric",
     day: "numeric",
   });

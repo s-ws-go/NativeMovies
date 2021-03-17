@@ -13,7 +13,6 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 const SliderContainer = styled.View`
   /* web에서의 너비를 맞춰주기 위해 width에 100% 입력 */
-  width: 100%;
   height: ${HEIGHT / 4}px;
   margin-bottom: 30px;
 `;

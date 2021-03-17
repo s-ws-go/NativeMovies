@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components/native";
 import propTypes from "prop-types";
-import { apiImage } from "../Api";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
 import { formatdate, Trimtext } from "../Utils";
 import Poster from "./Poster";
-import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
   flex-direction: row;
@@ -39,8 +39,19 @@ const Overview = styled.Text`
 `;
 
 const Horizontal = ({ id, poster, title, overview, releasedate, firstair }) => {
+  const navigation = useNavigation();
+  const gotoDetail = () => {
+    navigation.navigate("Detail", {
+      id,
+      poster,
+      title,
+      overview,
+      releasedate,
+      firstair,
+    });
+  };
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={gotoDetail}>
       <Container>
         <Poster url={poster}></Poster>
         <Data>
