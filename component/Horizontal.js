@@ -63,7 +63,7 @@ Horizontal.propTypes = {
   poster: propTypes.string.isRequired,
   title: propTypes.string.isRequired,
   overview: propTypes.string.isRequired,
-  releasedate: propTypes.string.isRequired,
+  releasedate: propTypes.string,
 };
 
 export default Horizontal;
