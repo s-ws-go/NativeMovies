@@ -1,5 +1,7 @@
 // PanResponder --- React Native의 내장함수. 제스처를 인식하게 해 줌
 
+// interpolate --- 움직인 값으로 부터 다른 값들을 비례해서 얻을 수 있게 해줌 (ex. x값에 따라 바뀌는 각도값 등)
+
 import React, { useState } from "react";
 import styled from "styled-components/native";
 import propTypes from "prop-types";
@@ -39,21 +41,35 @@ const FavPresenter = ({ results }) => {
     onPanResponderRelease: () => {
       Animated.spring(position, {
         toValue: { x: 0, y: 0 },
+        // useNativeDriver 관련 오류 발생해서 코멘트 보고 따로 추가 해 줌.
+        useNativeDriver: true,
         // 여기다가 애니메이션 속성도 적용 가능(friction은 예시)
         friction: 20,
       }).start();
     },
   });
+  const rotationValues = position.x.interpolate({
+    //input 값과, 비례 적용 될 output 값 입력
+    inputRange: [-200, 0, 200],
+    outputRange: ["-5deg", "0deg", "5deg"],
+    //최대, 최소값을 input, output 만큼 제한시킴(-10, 10 이상 이하로 안 움직임)
+    extrapolate: "clamp",
+  });
+
   return (
     <Container>
-      {results.reverse().map((result, index) => {
+      {results.map((result, index) => {
         if (index === topIndex) {
           return (
             <Animated.View
               style={{
                 ...styles,
                 zIndex: 1,
-                transform: [...position.getTranslateTransform()],
+                transform: [
+                  //interpolate 적용한 애들 transform의 rotate값으로 설정시켜 줌
+                  { rotate: rotationValues },
+                  ...position.getTranslateTransform(),
+                ],
               }}
               key={result.id}
               {...panResponder.panHandlers}
@@ -66,7 +82,7 @@ const FavPresenter = ({ results }) => {
           <Animated.View
             style={{
               ...styles,
-              //뒷 카드에는 transform 효과 삭제
+              zIndex: -index,
             }}
             key={result.id}
             {...panResponder.panHandlers}
