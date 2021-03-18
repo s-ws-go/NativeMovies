@@ -48,6 +48,7 @@ const Horizontal = ({ id, poster, title, overview, releasedate, firstair }) => {
       overview,
       releasedate,
       firstair,
+      isTv: false,
     });
   };
   return (
@@ -71,7 +72,8 @@ const Horizontal = ({ id, poster, title, overview, releasedate, firstair }) => {
 
 Horizontal.propTypes = {
   id: propTypes.number.isRequired,
-  poster: propTypes.string.isRequired,
+  poster: propTypes.string,
+
   title: propTypes.string.isRequired,
   overview: propTypes.string.isRequired,
   releasedate: propTypes.string,

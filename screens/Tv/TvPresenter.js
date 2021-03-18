@@ -8,13 +8,22 @@ import Horizontal from "../../component/Horizontal";
 
 const Container = styled.View``;
 
-export default ({ loading, today, thisWeek, topRated, popular, refreshFn }) => {
+export default ({
+  loading,
+  today,
+  thisWeek,
+  topRated,
+  popular,
+  refreshFn,
+  isTv,
+}) => {
   return (
     <ScrollContainer refreshFn={refreshFn} loading={loading}>
       <Container>
         <HorizontalSliders title="인기 채널">
           {popular.map((show) => (
             <Vertical
+              isTv={true}
               key={show.id}
               id={show.id}
               poster={show.poster_path}
@@ -26,6 +35,7 @@ export default ({ loading, today, thisWeek, topRated, popular, refreshFn }) => {
         <HorizontalSliders title="Top Rated">
           {topRated.map((show) => (
             <Vertical
+              isTv={true}
               key={show.id}
               id={show.id}
               poster={show.poster_path}
@@ -37,6 +47,7 @@ export default ({ loading, today, thisWeek, topRated, popular, refreshFn }) => {
         <HorizontalSliders title="This Week Shows">
           {thisWeek.map((show) => (
             <Vertical
+              isTv={true}
               key={show.id}
               id={show.id}
               poster={show.poster_path}
@@ -48,6 +59,7 @@ export default ({ loading, today, thisWeek, topRated, popular, refreshFn }) => {
         <ListSliders title="Airing Today">
           {today.map((show) => (
             <Horizontal
+              isTv={true}
               key={show.id}
               id={show.id}
               poster={show.poster_path}

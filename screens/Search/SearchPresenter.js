@@ -8,7 +8,14 @@ import HorizontalSliders from "../../component/HorizontalSliders";
 import Vertical from "../../component/Vertical";
 import ScrollContainer from "../../component/ScrollContainer";
 
-const SearchPresenter = ({ movies, shows, onChange, onSubmit, keyword }) => (
+const SearchPresenter = ({
+  movies,
+  shows,
+  onChange,
+  onSubmit,
+  keyword,
+  isTv,
+}) => (
   //onSubmit 시 keyword가 비어 있을 때 새로고침하면 에러가 남. 이거 고치는 작업 컨테이너에서 함
   <ScrollContainer loading={false} refreshFn={onSubmit}>
     <Input
@@ -21,6 +28,7 @@ const SearchPresenter = ({ movies, shows, onChange, onSubmit, keyword }) => (
       <HorizontalSliders title="영화 검색결과">
         {movies.map((movie) => (
           <Vertical
+            isTv={false}
             key={movie.id}
             id={movie.id}
             poster={movie.poster_path}
@@ -34,6 +42,7 @@ const SearchPresenter = ({ movies, shows, onChange, onSubmit, keyword }) => (
       <HorizontalSliders title="TV 검색결과">
         {shows.map((show) => (
           <Vertical
+            isTv={true}
             key={show.id}
             id={show.id}
             poster={show.poster_path}

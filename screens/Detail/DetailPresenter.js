@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components/native";
-import { Dimensions } from "react-native";
+import { ActivityIndicator, Dimensions } from "react-native";
 import ScrollContainer from "../../component/ScrollContainer";
 import { apiImage } from "../../Api";
 import Poster from "../../component/Poster";
 import Votes from "../../component/Votes";
+import { formatdate } from "../../Utils";
 
 const BG = styled.Image`
   width: 100%;
@@ -31,8 +32,9 @@ const Info = styled.View`
 `;
 const Title = styled.Text`
   color: white;
+  font-weight: bold;
   font-size: 26px;
-  font-weight: 900;
+  font-style: italic;
   margin-bottom: 10px;
 `;
 
@@ -40,38 +42,93 @@ const Data = styled.View`
   width: 70%;
   align-items: flex-start;
   padding-left: 40px;
-  margin-top: 70px;
+  margin-top: 60px;
 `;
 
 const DataName = styled.Text`
   color: white;
   opacity: 0.7;
   margin-bottom: 3px;
+  font-weight: bold;
+  margin-top: 20px;
 `;
 const DataValue = styled.Text`
   color: white;
   opacity: 0.7;
+  margin-top: 5px;
 `;
 
-export default ({ backgroundImage, title, votes, overview, poster }) => {
+export default ({ result, loading }) => {
   return (
-    <ScrollContainer>
+    <ScrollContainer
+      loading={false}
+      contentContainerStyle={{ paddingBottom: 80 }}
+    >
       <>
         <Header>
-          <BG source={{ uri: apiImage(backgroundImage, "-") }} />
+          <BG source={{ uri: apiImage(result.backgroundImage, "-") }} />
           <Container>
-            <Poster url={poster} />
+            <Poster url={result.poster} />
             <Info>
-              <Title>{title}</Title>
-              {votes > 0 && <Votes votes={votes} />}
+              <Title>{result.title}</Title>
+              {result.votes > 0 && <Votes votes={result.votes} />}
             </Info>
           </Container>
         </Header>
         <Data>
-          {overview && (
+          {result.overview && (
             <>
               <DataName>Overview</DataName>
-              <DataValue>{overview}</DataValue>
+              <DataValue>{result.overview}</DataValue>
+            </>
+          )}
+          {loading && (
+            <ActivityIndicator color="white" style={{ marginTop: 30 }} />
+          )}
+          {result.spoken_languages && (
+            <>
+              <DataName>Languages</DataName>
+              <DataValue>
+                {result.spoken_languages.map((l) => `${l.name}  `)}
+              </DataValue>
+            </>
+          )}
+          {result.release_date && (
+            <>
+              <DataName>Release Date</DataName>
+              <DataValue>{formatdate(result.release_date)}</DataValue>
+            </>
+          )}
+          {result.first_air_date && (
+            <>
+              <DataName>First Air Date</DataName>
+              <DataValue>{formatdate(result.first_air_date)}</DataValue>
+            </>
+          )}
+          {result.runtime && (
+            <>
+              <DataName>Runtime</DataName>
+              <DataValue>{result.runtime} minutes</DataValue>
+            </>
+          )}
+          {result.genres && (
+            <>
+              <DataName>Genres</DataName>
+              <DataValue>
+                {result.genres.map((g, index) =>
+                  //장르 맨 끝의 뒷 부분의 쉼표는 안 나오게 하는 명령어
+                  //index는 0부터 시작하니까 +1 로 length 숫자랑 맞춰준겨.
+                  index + 1 === result.genres.length ? g.name : `${g.name}, `
+                )}
+              </DataValue>
+            </>
+          )}
+          {(result.number_of_seasons || result.number_of_episodes) && (
+            <>
+              <DataName>Seasons / Episodes</DataName>
+              <DataValue>
+                {result.number_of_seasons} / {result.number_of_episodes}
+              </DataValue>
             </>
           )}
         </Data>

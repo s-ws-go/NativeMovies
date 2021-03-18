@@ -33,7 +33,7 @@ const ScrollContainer = ({ loading, children, refreshFn }) => {
         justifyContent: loading ? "center" : "flex-start",
       }}
     >
-      {loading ? <ActivityIndicator size="large" color="skyblue" /> : children}
+      {loading ? <ActivityIndicator size="large" color="#e84118" /> : children}
     </ScrollView>
   );
 };
