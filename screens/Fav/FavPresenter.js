@@ -35,15 +35,11 @@ const FavPresenter = ({ results }) => {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (eve, { dx, dy }) =>
-      // dx, dy는 x, y 의 distance_이동거리 개념이기 때문에 어느 위치든 한번 클릭하는 이벤트는 두 값이 모두 0이다(이동 x)
       position.setValue({ x: dx, y: dy }),
-    //Release는 터치를 떼었을 때의 반응 설정 가능. spring함수는 애니메이션 설정 값을 천천히 0으로 만들어 주는 함수
     onPanResponderRelease: () => {
       Animated.spring(position, {
         toValue: { x: 0, y: 0 },
-        // useNativeDriver 관련 오류 발생해서 코멘트 보고 따로 추가 해 줌.
         useNativeDriver: true,
-        // 여기다가 애니메이션 속성도 적용 가능(friction은 예시)
         friction: 20,
       }).start();
     },
@@ -56,9 +52,22 @@ const FavPresenter = ({ results }) => {
     extrapolate: "clamp",
   });
 
+  const secondCardOpacity = position.x.interpolate({
+    inputRange: [-200, 0, 200],
+    outputRange: [0.9, 0.2, 0.9],
+    extrapolate: "clamp",
+  });
+
+  const secondCardScale = position.x.interpolate({
+    inputRange: [-200, 0, 200],
+    outputRange: [1, 0.8, 1],
+    extrapolate: "clamp",
+  });
+
   return (
     <Container>
       {results.map((result, index) => {
+        //첫 번째 카드
         if (index === topIndex) {
           return (
             <Animated.View
@@ -66,7 +75,6 @@ const FavPresenter = ({ results }) => {
                 ...styles,
                 zIndex: 1,
                 transform: [
-                  //interpolate 적용한 애들 transform의 rotate값으로 설정시켜 줌
                   { rotate: rotationValues },
                   ...position.getTranslateTransform(),
                 ],
@@ -77,19 +85,38 @@ const FavPresenter = ({ results }) => {
               <Poster source={{ uri: apiImage(result.poster_path) }} />
             </Animated.View>
           );
+          //두 번째 카드
+        } else if (index === topIndex + 1) {
+          return (
+            <Animated.View
+              style={{
+                ...styles,
+                zIndex: -index,
+                opacity: secondCardOpacity,
+                transform: [{ scale: secondCardScale }],
+              }}
+              key={result.id}
+              {...panResponder.panHandlers}
+            >
+              <Poster source={{ uri: apiImage(result.poster_path) }} />
+            </Animated.View>
+          );
+          // 두 번째 카드 뒤의 카드 (완전 투명하게 해서 안 보이게 함)
+        } else {
+          return (
+            <Animated.View
+              style={{
+                ...styles,
+                zIndex: -index,
+                opacity: 0,
+              }}
+              key={result.id}
+              {...panResponder.panHandlers}
+            >
+              <Poster source={{ uri: apiImage(result.poster_path) }} />
+            </Animated.View>
+          );
         }
-        return (
-          <Animated.View
-            style={{
-              ...styles,
-              zIndex: -index,
-            }}
-            key={result.id}
-            {...panResponder.panHandlers}
-          >
-            <Poster source={{ uri: apiImage(result.poster_path) }} />
-          </Animated.View>
-        );
       })}
     </Container>
   );
