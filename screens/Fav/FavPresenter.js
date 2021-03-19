@@ -31,24 +31,39 @@ const styles = {
 
 const FavPresenter = ({ results }) => {
   const [topIndex, setTopIndex] = useState(0);
+  const nextCard = () => setTopIndex((currentValue) => currentValue + 1);
   const position = new Animated.ValueXY();
   const panResponder = PanResponder.create({
+    //첫 번째 인자는 event, 두 번째 인자는 gestureState(공식 API 문서 참고)
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (eve, { dx, dy }) =>
       position.setValue({ x: dx, y: dy }),
-    onPanResponderRelease: () => {
-      Animated.spring(position, {
-        toValue: { x: 0, y: 0 },
-        useNativeDriver: true,
-        friction: 20,
-      }).start();
+    onPanResponderRelease: (eve, { dx, dy }) => {
+      //start 함수 콜백함수로 사용 가능해서, 카드 index 값 올려서 없애주는 nextCard 함수 적용
+      //discard to the left
+      if (dx <= -200) {
+        Animated.spring(position, {
+          toValue: { x: -WIDTH, y: dy },
+          useNativeDriver: true,
+        }).start(nextCard);
+        //discard to the right
+      } else if (dx >= 200) {
+        Animated.spring(position, {
+          toValue: { x: WIDTH, y: dy },
+          useNativeDriver: true,
+        }).start(nextCard);
+      } else {
+        Animated.spring(position, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: true,
+        }).start();
+      }
     },
   });
   const rotationValues = position.x.interpolate({
     //input 값과, 비례 적용 될 output 값 입력
     inputRange: [-200, 0, 200],
     outputRange: ["-5deg", "0deg", "5deg"],
-    //최대, 최소값을 input, output 만큼 제한시킴(-10, 10 이상 이하로 안 움직임)
     extrapolate: "clamp",
   });
 
@@ -67,6 +82,10 @@ const FavPresenter = ({ results }) => {
   return (
     <Container>
       {results.map((result, index) => {
+        //날려버린 카드 렌더링 안되게 최적화
+        if (index < topIndex) {
+          return null;
+        }
         //첫 번째 카드
         if (index === topIndex) {
           return (
@@ -121,7 +140,5 @@ const FavPresenter = ({ results }) => {
     </Container>
   );
 };
-
-//저장할 때 마다 맨 아래사진하고 맨 위에 사진만 번갈아서 나옴.. --> 해결해야해
 
 export default FavPresenter;

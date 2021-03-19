@@ -9,7 +9,12 @@ import styled, {
 import propTypes from "prop-types";
 import { useState } from "react/cjs/react.development";
 
-const ScrollContainer = ({ loading, children, refreshFn }) => {
+const ScrollContainer = ({
+  loading,
+  children,
+  refreshFn,
+  contentContainerStyle,
+}) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -29,8 +34,9 @@ const ScrollContainer = ({ loading, children, refreshFn }) => {
         backgroundColor: "black",
       }}
       contentContainerStyle={{
-        flex: loading ? 1 : null,
+        flex: loading ? 1 : 0,
         justifyContent: loading ? "center" : "flex-start",
+        ...contentContainerStyle,
       }}
     >
       {loading ? <ActivityIndicator size="large" color="#e84118" /> : children}
